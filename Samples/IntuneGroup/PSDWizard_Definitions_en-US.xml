@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+
+<Wizard>
+	<Global>
+		<CustomStatement><![CDATA[ "Windows Deployment Wizard" ]]></CustomStatement>
+		<Condition><![CDATA[UCASE(Property("SkipWizard")) <> "YES" ]]></Condition>
+		<TSVariableFieldPrefix>TS_</TSVariableFieldPrefix>
+	</Global>
+
+	<Pane id="CustomPane_IntuneGroup" title="Intune Group">
+		<Condition><![CDATA[UCase(Property("SkipIntuneGroup")) <> "YES"]]></Condition>
+		<MainTitle><![CDATA[ "Select an Intune Group" ]]></MainTitle>
+		<SubTitle><![CDATA[ "Select an Intune Group from the dropdown" ]]></SubTitle>
+		<Help><![CDATA[ "Select an Intune Group from the dropdown." ]]></Help>
+	</Pane>
+
+	<Pane id="Ready" title="Summary">
+		<Condition><![CDATA[ UCase(Property("SkipSummary")) <> "YES"]]></Condition>
+		<MainTitle><![CDATA[ "Summary details" ]]></MainTitle>
+		<SubTitle><![CDATA[ "Review selected settings" ]]></SubTitle>
+		<Help><![CDATA[ "This is a summary of all selections within the deployment wizard.&#xa;&#xa;These setting will be used during the deployment process.
+		&#xa;&#xa;Click Begin when ready" ]]></Help>
+	</Pane>
+</Wizard>

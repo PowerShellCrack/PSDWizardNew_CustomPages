@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+
+<Wizard>
+	<Global>
+		<CustomStatement><![CDATA[ "Windows Deployment Wizard" ]]></CustomStatement>
+		<Condition><![CDATA[UCASE(Property("SkipWizard")) <> "YES" ]]></Condition>
+		<TSVariableFieldPrefix>TS_</TSVariableFieldPrefix>
+	</Global>
+
+	<Pane id="CustomPane_DeviceName" title="Device Name">
+		<Condition><![CDATA[UCase(Property("SkipDeviceName")) <> "YES"]]></Condition>
+		<Condition><![CDATA[Property("DeploymentType") <> "REPLACE" and Property("DeploymentType") <> "CUSTOM" and Property("DeploymentType") <> "StateRestore" and Property("DeploymentType") <> "UPGRADE" ]]></Condition>
+		<MainTitle><![CDATA[ "Fill in Device Name" ]]></MainTitle>
+		<SubTitle><![CDATA[ "Let's get the basic things out of the way" ]]></SubTitle>
+		<Context><![CDATA[ "What would you like the device name to be?" ]]></Context>
+		<Help><![CDATA[ "Fill in all available fields.&#xa;&#xa;The device name must meet certain criteria's based on selections" ]]></Help>
+	</Pane>
+
+</Wizard>
