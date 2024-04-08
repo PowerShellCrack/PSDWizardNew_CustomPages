@@ -8,10 +8,10 @@ $PreloadScriptBlock = {
     #Get-PSDWizardElement -Name "_cmbDomainOUs" | Set-PSDWizardElement -Enable:$false
 
     #getthe region and area list
-    $Global:DeviceNameRegionList = Get-PSDWizardTSEnvVar 'DeviceNameRegions' -WildCard -ValueOnly
-    $Global:NYAreaList = Get-PSDWizardTSEnvVar 'DeviceNameNYAreas' -WildCard -ValueOnly
-    $Global:NCAreaList = Get-PSDWizardTSEnvVar 'DeviceNameNCAreas' -WildCard -ValueOnly
-    $Global:SCAreaList = Get-PSDWizardTSEnvVar 'DeviceNameSCAreas' -WildCard -ValueOnly
+    $Global:DeviceNameRegionList = Get-PSDWizardTSEnvProperty 'DeviceNameRegions' -WildCard -ValueOnly
+    $Global:NYAreaList = Get-PSDWizardTSEnvProperty 'DeviceNameNYAreas' -WildCard -ValueOnly
+    $Global:NCAreaList = Get-PSDWizardTSEnvProperty 'DeviceNameNCAreas' -WildCard -ValueOnly
+    $Global:SCAreaList = Get-PSDWizardTSEnvProperty 'DeviceNameSCAreas' -WildCard -ValueOnly
 
     Add-PSDWizardComboList -Array $Global:DeviceNameRegionList -ListObject $_cmbTabRegion
     #Set event for region selection
@@ -46,13 +46,13 @@ $PreloadScriptBlock = {
 
 
     #change the text for domain join OU to combo box if DomainOUs* values are found
-    If((Get-PSDWizardTSEnvVar 'DomainOUs' -WildCard -ValueOnly).count -gt 0){
+    If((Get-PSDWizardTSEnvProperty 'DomainOUs' -WildCard -ValueOnly).count -gt 0){
         Get-PSDWizardElement -Name "TS_MachineObjectOU" | Set-PSDWizardElement -Visible:$false
         Get-PSDWizardElement -Name "_cmbDomainOUs" | Set-PSDWizardElement -Visible:$true
 
-        $OUList = Get-PSDWizardTSEnvVar 'DomainOUs' -WildCard -ValueOnly
+        $OUList = Get-PSDWizardTSEnvProperty 'DomainOUs' -WildCard -ValueOnly
 
-        If($DefaultOU = Get-PSDWizardTSEnvVar 'MachineObjectOU' -ValueOnly){
+        If($DefaultOU = Get-PSDWizardTSEnvProperty 'MachineObjectOU' -ValueOnly){
             Add-PSDWizardComboList -Array $OUList -ListObject $_cmbDomainOUs -PreSelect $DefaultOU
         }Else{
             Add-PSDWizardComboList -Array $OUList -ListObject $_cmbDomainOUs
@@ -146,9 +146,9 @@ $PreloadScriptBlock = {
         }
         
 
-        $ADUser = Get-PSDWizardTSEnvVar 'DomainAdmin' -ValueOnly
-        $ADDomain = Get-PSDWizardTSEnvVar 'DomainAdminDomain' -ValueOnly
-        $SecurePass = ConvertTo-SecureString -String (Get-PSDWizardTSEnvVar 'DomainAdminPassword' -ValueOnly) -AsPlainText -Force
+        $ADUser = Get-PSDWizardTSEnvProperty 'DomainAdmin' -ValueOnly
+        $ADDomain = Get-PSDWizardTSEnvProperty 'DomainAdminDomain' -ValueOnly
+        $SecurePass = ConvertTo-SecureString -String (Get-PSDWizardTSEnvProperty 'DomainAdminPassword' -ValueOnly) -AsPlainText -Force
         $PSDComputerCredential = New-Object System.Management.Automation.PsCredential("$ADDomain\$ADUser", $SecurePass)
         Try{
             $ADObject = Get-ADComputerInfo -Name $TS_OSDComputerName.Text -Credential $PSDComputerCredential

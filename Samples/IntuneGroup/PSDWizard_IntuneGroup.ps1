@@ -5,7 +5,7 @@ $PreloadScriptBlock = {
 
     #get list from customsettings.ini
     #make the list global so it can be used in the page load script block
-    $Global:IntuneGroupList = Get-PSDWizardTSEnvVar -Name "IntuneGroup" -WildCard -ValueOnly
+    $Global:IntuneGroupList = Get-PSDWizardTSEnvProperty -Name "IntuneGroup" -WildCard -ValueOnly
     
     #Add an event to the text box to enable the next button if text if populated
     [System.Windows.RoutedEventHandler]$Script:OnIntuneGroupTextChanged = {

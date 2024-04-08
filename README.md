@@ -40,7 +40,8 @@ Theses are useful functions you can use to interact with the PSDWizard
 - **Set-PSDWizardElement** - Used to set properties of a wizard element
 - **Add-PSDWizardComboList** - Used to populate a list of items to a ComboBox (aka dropdown)
 - **Add-PSDWizardList** - Used to populate a list of items to a ListBox (eg Modern theme)
-- **Get-PSDWizardTSEnvVar** - Used to get a Task Sequence variable
+- **Get-PSDWizardTSEnvProperty** - Used to get a TSEnv property and value
+- **Set-PSDWizardTSEnvProperty** - Used to set a TSEnv property value
 - **Get-PSDWizardTSData** - Returns Tasksequence steps and OS data
 - **Invoke-PSDWizardNotification** - Used to wizard with status messages
 
@@ -78,7 +79,7 @@ DeviceRole005=Application Packager Device
 $PreloadScriptBlock = {
     #get list from customsettings.ini
     #make the list global so it can be used in the page load script block
-    $Global:DeviceRoleList = Get-PSDWizardTSEnvVar -Name "DeviceRole" -WildCard -ValueOnly
+    $Global:DeviceRoleList = Get-PSDWizardTSEnvProperty -Name "DeviceRole" -WildCard -ValueOnly
 }
 
 $PageLoadScriptBlock = {}
@@ -116,6 +117,7 @@ In the repo I have provided some sample pages. Each of these samples has a set o
 - **Role** - A wizard page that displays a drop down that is populated by a list property in cs.ini. This value can then be used later on in Task sequence to do additional actions (Not included)
 - **DeviceName** - A wizard page that shows multiple dropdowns to generate proper device name. Then there is a check availability button that will attempt to check the name against AD. **This is NOT 100 working yet**. This requires the [adsi in PE](https://www.deploymentresearch.com/adding-adsi-support-for-winpe-10/) as well
 - **IntuneCategory** - COMING SOON
+- **AutopilotProfile** - COMING SOON
 
 ## How to Apply
 
