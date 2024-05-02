@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+
+<Wizard>
+	<Global>
+		<CustomStatement><![CDATA[ "Windows Deployment Wizard" ]]></CustomStatement>
+		<Condition><![CDATA[UCASE(Property("SkipWizard")) <> "YES" ]]></Condition>
+		<!--<Accessibility><![CDATA[ TabNavigation == "False" ]]>False</Accessibility>
+		<EnableFeatureSupport>
+			<Feature Name="ApplicationBundleSelection" ElementName="" Enabled="False" />
+			<Feature Name="ProfileRoleSelection" ElementName="_depTabProfiles" Enabled="False" />
+			<Feature Name="RoleSelection" ElementName="" Enabled="False" />
+		</EnableFeatureSupport>
+		-->
+		<TSVariableFieldPrefix>TS_</TSVariableFieldPrefix>
+	</Global>
+
+	<Pane id="CustomPane_TargetDisk" title="Select Target Disk">
+		<Condition><![CDATA[UCase(Property("SkipDiskSelection")) <> "YES"]]></Condition>
+		<Condition><![CDATA[Property("DeploymentType") <> "REPLACE" and Property("DeploymentType") <> "CUSTOM" and Property("DeploymentType") <> "StateRestore" and Property("DeploymentType") <> "UPGRADE" ]]></Condition>
+		<MainTitle><![CDATA[ "Target OS Disk" ]]></MainTitle>
+		<SubTitle><![CDATA[ "Operating System target install" ]]></SubTitle>
+		<Context><![CDATA[ "Where would you like the OS to install to?" ]]></Context>
+		<Help><![CDATA[ "Select the appropiate disk.&#xa;&#xa;Use the viewer to display disks and volumes" ]]></Help>
+	</Pane>
+
+	
+</Wizard>

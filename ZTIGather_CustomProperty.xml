@@ -1,0 +1,34 @@
+
+<properties>
+
+    <!-- PSDWizard Control Properties -->
+    <property id="PSDWizard" type="string" overwrite="false" description="Set the perferred PSDwizard" />
+    <property id="PSDWizardTheme" type="string" overwrite="false" description="Set the perferred PSDwizard theme" />
+    <property id="PSDPrestartMode" type="string" overwrite="false" description="Set the perferred PSDwizard prestart mode" />
+    <property id="PSDWizardLogo" type="string" overwrite="false" description="Set the perferred PSDwizard logo" />
+    <property id="PSDLoaderLogo" type="string" overwrite="false" description="Set the perferred PSDwizard loader logo" />
+    <property id="SkipPSDWelcome" type="string" overwrite="false" description="Skip the PSDwizard welcome screen" />
+    <property id="SkipPSDWizardSplashScreen" type="string" overwrite="false" description="Skip the PSDwizard splash screen" />
+    <property id="SkipReadinessCheck" type="string" overwrite="false" description="Skip the PSDwizard readiness check" />
+    <property id="SkipDeployReadiness" type="string" overwrite="false" description="Skip the PSDwizard deploy readiness" />
+    <property id="SkipRoleSelection" type="string" overwrite="false" description="Skip the PSDwizard role selection" />
+    <property id="SkipIntuneGroup" type="string" overwrite="false" description="Skip the PSDwizard Intune group selection" />
+    <property id="SkipDiskSelection" type="string" overwrite="false" description="Skip the PSDwizard disk selection" />
+    <property id="PSDReadinessAllowBypass" type="string" overwrite="false" description="Allow the PSDwizard readiness check to be bypassed" />
+    <property id="PSDReadinessScript" type="string" overwrite="false" description="The script to run for the PSDwizard readiness check" />
+    <property id="PSDWizardCustomPaneAllowBypass" type="string" overwrite="false" description="Allow the PSDwizard custom pane to be bypassed" />
+    <property id="PSDWizardCollapseTSList" type="string" overwrite="false" description="Collapse the task sequence list in the PSDwizard" />
+
+    <!-- PSD Properties -->
+
+    <property id="PSDDebug" type="string" overwrite="true" description="Enable debug for both logging and PSDwizard" />
+    <property id="PSDDeployRoots" type="string" overwrite="true" description="The hhttp(s) path to the deployment share" />
+    <property id="PSDResoureRoots" type="string" overwrite="true" description="The http(s) path to the resources share" />
+
+    <!-- PSD Properties Lists -->
+
+    <property id="PSDReadinessCheck" type="list" description="A list readiness checks to run. Max is 4" />
+    <property id="IntuneGroup" type="list" description="Optional list of Intune group to assign the device to" />
+    <property id="DeviceRole" type="list" description="Optional list of device role to assign the device to" />
+
+</properties>

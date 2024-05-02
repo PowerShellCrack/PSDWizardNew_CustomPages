@@ -1,6 +1,8 @@
-# PSDWizardNew Custom Page samples
+# PSDWizardNew Custom Page 
 
-Samples of custom pages for PSD
+How to create custom pages for PSD
+
+- Samples included
 
 > NOTE: Current PSDWizardNew module does not include the ability to call custom scripts for custom pages. Custom Pages can still be added but the data will need to be populated within the xaml page itself. The next release (v2.3.0.+) will allow for custom scripts
 
@@ -15,9 +17,92 @@ Samples of custom pages for PSD
 - Script must contain a $PageLoadScriptBlock and $PreloadScriptBlock. These can be empty scriptblocks
 - Script can contain other functions and variables as needed outside the scriptblocks. However keep in mind this will be processed twice. 
 
+
+## How to add a page
+
+1. Open the definition file for a theme (eg. \<PSD>\Script\PSDWizardNew\Themes\Classic_Theme_Definitions_en-US.xml) in a Text editor
+
+2. Add a new pane line with page details 
+
+```xml
+<Pane id="CustomPane_GroupPage" reference="Classic\PSDWizard_GroupPage_en-US.xaml" margin="0,0,0,0" />).
+```
+> NOTE: The list order DOES matter; it controls where the page will be
+
+3. Add a new xaml file in the \<themes> folder and name it the same as the reference. In this example I would add a new file here:  <PSD>\Script\PSDWizardNew\Themes\Classic\PSDWizard_GroupPage_en-US.xaml.
+
+![screenshot2](.images/image2.png)
+
+4. Edit the page. It must consist of these elements (expect what's in bold). Be sure give the name of the tab something unique (eg. x:Name="_grpTabLayout")
+
+```xml
+<Grid x:Name="_grpTabLayout" Margin="0" Grid.ColumnSpan="2">
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="490"></ColumnDefinition>
+        <ColumnDefinition Width="150"></ColumnDefinition>
+    </Grid.ColumnDefinitions>
+    <Label x:Name="_grpTabMainTitle" Grid.Column="0" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top" FontSize="22" Content="@MainTitle"/>
+    <Label x:Name="_grpTabSubTitle" FontSize="14" HorizontalAlignment="Left" Margin="10,73,0,0" VerticalAlignment="Top" Content="@SubTitle"/>
+
+    <TextBox x:Name="TS_IntuneGroup" HorizontalAlignment="Left" Height="31" Margin="10,103,0,0" VerticalAlignment="Top" Width="331" Foreground='Gray' FontSize="18"/>
+
+    <Label Content="More Info" Grid.Column="1" FontSize="14" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Foreground="LightSlateGray" />
+    <TextBlock x:Name="_grpTabMoreInfo" Grid.Column="1" HorizontalAlignment="Left" Margin="10,89,0,0" Width="136" TextWrapping="Wrap" VerticalAlignment="Top" Height="422">
+        <Run Text="@Help"/>
+    </TextBlock>
+</Grid>
+```
+
+![screenshot3](.images/image3.png)
+
+5. Within the grid you can add code to make inputs, dropdowns, buttons, etc. The problem is this code HAS to be formatted correctly or the whole wizard won't load! I like to take code from other pages as an example. If you do this any x:Name MUST be unique and by setting one of the x:Name with a TS_\<value>; will be exported as a variable when wizard is closed.
+
+> HINT: Knowing the margins can be tricky; either use Visual Studio 2022 Community Edition to edit the xaml or copy code from another page of the same property. I copied the search input box from the application page and removed some properties. In this screenshot there is a section to build a two column page (help menu is in Column 1)
+Follow these steps for a quick way to get your VS project setup: https://github.com/PowerShellCrack/PSDWizardNew_CustomPages/blob/main/Samples/README.MD
+
+![screenshot4](.images/image4.png)
+
+Here is what it looks like in VS2022
+
+![screenshot5](.images/image5.png)
+
+> The last thing to do is control how the page will display and what language. You'll notice in the VS2020 Screenshot, some text with @ in the. These are placeholders for words in a language. Even though English is the only supported language right now, this definition contains all types of pages and their conditions.
+
+6. Open the main language definition file (eg. \<PSD>\Script\PSDWizardNew\PSDWizard_Definitions_en-US.xml) in a Text editor
+Add a new Pane to where you want the pane to show up (order does matter here). The id must match the name designator of the page (eg. GroupPage is the designator for PSDWizard_GroupPage_en-US.xaml)
+
+```xml
+<Pane id="CustomPane_GroupPage" title="Intune Group">
+    <Condition><![CDATA[ UCase(Property("SkipGroupPage")) <> "YES"]]></Condition>
+    <MainTitle><![CDATA[ "Intune Group" ]]></MainTitle>
+    <SubTitle><![CDATA[ "Group Name" ]]></SubTitle>
+    <Help><![CDATA[ "Add an Azure AD group.&#xa;&#xa;These setting will be used during the deployment process.
+    &#xa;&#xa;Add this device to an Intune group" ]]></Help>
+</Pane>
+```
+
+![screenshot6](.images/image6.png)
+
+> Optional: You can fill in the conditions, Main title, subtitle and help with what you want.
+If done correctly you should get this:
+
+7. Set the theme
+
+![screenshot1](.images/image1.png)
+
+8. Mount the ISO and boot the device and it should show up:
+
+![screenshot7](.images\image7.png)
+
+The ready page will also see the Task sequence variable. This will get exported when wizard complete for additional steps to take action
+
+![screenshot8](.images/image8.png)
+
 ### Scriptblocks
 
-Each page script is processed twice, once in the Preload phase and once in the PageLoad phase, there should be careful planning on which scirptblock processes what. 
+the PSDWizard checks for any page that has the prefix id of _CustomPage\__; it will then check for a corresponding script and attempt to run it. 
+
+Each page script is processed twice, once in the Preload phase (BEFORE PSDWIZARD LOADS) and once in the PageLoad phase (WHEN PAGE IS ACTIVE), there should be careful planning on which scriptblock will processes what. 
 
 - **PreloadScriptBlock** - Used to define functions and variables that will be process BEFORE the Wizard is loaded
   - Useful for defining event handlers and other functions that need to be defined before the Wizard pages are loaded
@@ -113,13 +198,14 @@ $PageLoadScriptBlock = {}
 
 In the repo I have provided some sample pages. Each of these samples has a set of file that will need to be added or modified to the existing PSD Deployment Share.
 
+- **TargetDisk** - A wizard page that allows you to choose the disk to target OS deployment. 
 - **IntuneGroup** - A wizard page that displays a drop down that is populated by a list property in cs.ini. There is no mechanism that actually added the device to a group. That would have to be developed
 - **Role** - A wizard page that displays a drop down that is populated by a list property in cs.ini. This value can then be used later on in Task sequence to do additional actions (Not included)
 - **DeviceName** - A wizard page that shows multiple dropdowns to generate proper device name. Then there is a check availability button that will attempt to check the name against AD. **This is NOT 100 working yet**. This requires the [adsi in PE](https://www.deploymentresearch.com/adding-adsi-support-for-winpe-10/) as well
 - **IntuneCategory** - COMING SOON
 - **AutopilotProfile** - COMING SOON
 
-## How to Apply
+## How to Apply Samples
 
 > WARNING READ THOROUGHLY: DO NOT JUST OVERWRITE. You can break the wizard
 
@@ -132,7 +218,7 @@ In the repo I have provided some sample pages. Each of these samples has a set o
 |**PSDWizard_<CustomPane>_en-US.xaml**|Classic,Refresh|This is the pane that shows in the wizard. Recommend using Visual studio to modify|Add this file to the _Scripts\PSDWizardNew\Themes\Classic_ folder
 |**Icons.xaml**|All|These are SVG icons used in the custom pane| EDIT the _Scripts\PSDWizardNew\Resources\Icons.xaml_ file and add the canvas item|
 
-## Screenshots
+## Sample Screenshots
 
 ![cs](.images/cs.png)
 
@@ -141,6 +227,8 @@ In the repo I have provided some sample pages. Each of these samples has a set o
 ![role](.images/role.png)
 
 ![intunegroup](.images/intunegroup.png)
+
+![targetdisk](.images/targetdisk.png)
 
 ![summary](.images/summary.png)
 
